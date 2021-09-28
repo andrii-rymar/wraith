@@ -22,8 +22,8 @@ class Wraith::Wraith
       end
     end
 
-    if @config['imports']
-      @config = apply_imported_config(@config['imports'], @config, options[:imports_must_resolve])
+    if @config[:imports]
+      @config = apply_imported_config(@config[:imports], @config, options[:imports_must_resolve])
     end
 
     logger.level = verbose ? Logger::DEBUG : Logger::INFO
@@ -68,22 +68,22 @@ class Wraith::Wraith
 
   def directory
     # Legacy support for those using array configs
-    @config["directory"].is_a?(Array) ? @config["directory"].first : @config["directory"]
+    @config[:directory].is_a?(Array) ? @config[:directory].first : @config[:directory]
   end
 
   def history_dir
-    @config.fetch('history_dir', false)
+    @config.fetch(:history_dir, false)
   end
 
   def engine
-    engine = @config["browser"]
+    engine = @config[:browser]
     # Legacy support for those using the old style "browser: \n phantomjs: 'casperjs'" configs
     engine = engine.values.first if engine.is_a? Hash
     engine
   end
 
   def snap_file
-    @config["snap_file"] ? convert_to_absolute(@config["snap_file"]) : snap_file_from_engine(engine)
+    @config[:snap_file] ? convert_to_absolute(@config[:snap_file]) : snap_file_from_engine(engine)
   end
 
   def snap_file_from_engine(engine)
@@ -100,20 +100,20 @@ class Wraith::Wraith
   end
 
   def before_capture
-    @config["before_capture"] ? convert_to_absolute(@config["before_capture"]) : false
+    @config[:before_capture] ? convert_to_absolute(@config[:before_capture]) : false
   end
 
   def widths
-    @config["screen_widths"]
+    @config[:screen_widths]
   end
 
   def resize
     # @TODO make this default to true, once it's been tested a bit more thoroughly
-    @config.fetch('resize_or_reload', 'reload') == "resize"
+    @config.fetch(:resize_or_reload, 'reload') == "resize"
   end
 
   def domains
-    @config["domains"]
+    @config[:domains]
   end
 
   def base_domain
@@ -133,75 +133,75 @@ class Wraith::Wraith
   end
 
   def settle
-    @config.fetch('settle', 10)
+    @config.fetch(:settle, 10)
   end
 
   def threads
-    @config.fetch('threads', '8').to_i
+    @config.fetch(:threads, '8').to_i
   end
 
   def spider_file
-    @config.fetch('spider_file', 'spider.txt')
+    @config.fetch(:spider_file, 'spider.txt')
   end
 
   def spider_days
-    @config["spider_days"]
+    @config[:spider_days]
   end
 
   def sitemap
-    @config["sitemap"]
+    @config[:sitemap]
   end
 
   def spider_skips
-    @config["spider_skips"]
+    @config[:spider_skips]
   end
 
   def paths
-    @config["paths"]
+    @config[:paths]
   end
 
   def fuzz
-    @config["fuzz"]
+    @config[:fuzz]
   end
 
   def highlight_color
-    @config.fetch('highlight_color', 'blue')
+    @config.fetch(:highlight_color, 'blue')
   end
 
   def mode
-    if %w(diffs_only diffs_first alphanumeric).include?(@config["mode"])
-      @config["mode"]
+    if %w(diffs_only diffs_first alphanumeric).include?(@config[:mode])
+      @config[:mode]
     else
       "alphanumeric"
     end
   end
 
   def threshold
-    @config.fetch('threshold', 0)
+    @config.fetch(:threshold, 0)
   end
 
   def gallery_template
-    @config.fetch('gallery', {}).fetch('template', 'basic_template')
+    @config.fetch(:gallery, {}).fetch('template', 'basic_template')
   end
 
   def thumb_height
-    @config.fetch('gallery', {}).fetch('thumb_height', 200)
+    @config.fetch(:gallery, {}).fetch('thumb_height', 200)
   end
 
   def thumb_width
-    @config.fetch('gallery', {}).fetch('thumb_width', 200)
+    @config.fetch(:gallery, {}).fetch('thumb_width', 200)
   end
 
   def phantomjs_options
-    @config["phantomjs_options"]
+    @config[:phantomjs_options]
   end
 
   def imports
-    @config.fetch('imports', false)
+    @config.fetch(:imports, false)
   end
 
   def verbose
     # @TODO - also add a `--verbose` CLI flag which overrides whatever you have set in the config
-    @config.fetch('verbose', false)
+    @config.fetch(:verbose, false)
   end
 end
